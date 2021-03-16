@@ -4,7 +4,6 @@ services:
   haproxy_latest:
     image: haproxy:latest
     volumes: 
-      - ./data:/usr/local/etc/haproxy
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     ports:
       # haproxy 管理
