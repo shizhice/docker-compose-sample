@@ -1,0 +1,61 @@
+version: "3"
+services:
+  rabbitmq1:
+    image: rabbitmq:3.8-management
+    volumes:
+      - ./rabbitmq1/data:/var/lib/rabbitmq
+      - ./rabbitmq1/rabbitmq.sh:/home/rabbitmq.sh
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_ERLANG_COOKIE=RabbitMQ-Cluster-Cookie
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - rabbitmq-net
+    restart:
+      always
+    hostname: rabbitmq1
+    container_name: rabbitmq1
+  
+  rabbitmq2:
+    image: rabbitmq:3.8-management
+    volumes:
+      - ./rabbitmq2/data:/var/lib/rabbitmq
+      - ./rabbitmq2/rabbitmq.sh:/home/rabbitmq.sh
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_ERLANG_COOKIE=RabbitMQ-Cluster-Cookie
+    ports:
+      - "15682:15672"
+      - "5682:5672"
+    networks:
+      - rabbitmq-net
+    restart:
+      always
+    hostname: rabbitmq2
+    container_name: rabbitmq2
+
+  rabbitmq3:
+    image: rabbitmq:3.8-management
+    volumes:
+      - ./rabbitmq3/data:/var/lib/rabbitmq
+      - ./rabbitmq3/rabbitmq.sh:/home/rabbitmq.sh
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_ERLANG_COOKIE=RabbitMQ-Cluster-Cookie
+    ports:
+      - "15692:15672"
+      - "5692:5672"
+    networks:
+      - rabbitmq-net
+    restart:
+      always
+    hostname: rabbitmq3
+    container_name: rabbitmq3
+
+networks:
+  rabbitmq-net:
