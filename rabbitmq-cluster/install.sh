@@ -28,3 +28,6 @@ ResetRabbitmqNode 1
 ResetRabbitmqNode 2
 # 初始化 rabbmitmq3
 ResetRabbitmqNode 3
+
+# 开启镜像队列
+docker exec -it rabbitmq1 rabbitmqctl set_policy ha-all "^" '{"ha-mode":"all","ha-sync-mode":"automatic"}'
