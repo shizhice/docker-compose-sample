@@ -1,0 +1,26 @@
+version: "3"
+
+services: 
+  haproxy_latest:
+    image: haproxy:latest
+    volumes: 
+      - ./data:/usr/local/etc/haproxy
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    ports:
+      # haproxy 管理
+      - 8800:8800
+      # RabbitMQ 集群
+      - 56720:56720
+      # RabbitMQ 集群管理面板
+      - 56721:56721
+    networks:
+      - haproxy-net
+      - rabbitmq-net
+    hostname: haproxy_latest
+    container_name: haproxy_latest
+
+networks:
+  haproxy-net:
+  rabbitmq-net:
+    external:
+      name: rabbitmq-cluster_rabbitmq-net
