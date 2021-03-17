@@ -1,0 +1,88 @@
+version: "3"
+
+services: 
+  redis-master:
+    image: redis:5
+    ports: 
+      - 6380:6379
+    container_name: redis-master
+    volumes:
+      - ./redis-master/redis.conf/:/usr/local/etc/redis.conf
+      - ./redis-master/data:/usr/local/redis/data
+      - ./redis-master/log:/var/log/redis
+    networks: 
+      - redis-net
+    command: redis-server /usr/local/etc/redis.conf
+    restart: always
+
+  redis-slave-01:
+    image: redis:5
+    ports: 
+      - 6381:6379
+    container_name: redis-slave-01
+    volumes:
+      - ./redis-slave-01/redis.conf/:/usr/local/etc/redis.conf
+      - ./redis-slave-01/data:/usr/local/redis/data
+      - ./redis-slave-01/log:/var/log/redis
+    networks: 
+      - redis-net
+    command: redis-server /usr/local/etc/redis.conf
+    restart: always
+
+  redis-slave-02:
+    image: redis:5
+    ports: 
+      - 6382:6379
+    container_name: redis-slave-02
+    volumes:
+      - ./redis-slave-02/redis.conf/:/usr/local/etc/redis.conf
+      - ./redis-slave-02/data:/usr/local/redis/data
+      - ./redis-slave-02/log:/var/log/redis
+    networks: 
+      - redis-net
+    command: redis-server /usr/local/etc/redis.conf
+    restart: always
+
+  redis-sentinel-01:
+    image: redis
+    container_name: redis-sentinel-01
+    ports:
+      - 26380:26379
+    volumes:
+      - ./sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./redis-sentinel-01/data:/usr/local/redis/data
+      - ./redis-sentinel-01/log:/var/log/redis
+    networks: 
+      - redis-net
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    restart: always
+  
+  redis-sentinel-02:
+    image: redis
+    container_name: redis-sentinel-02
+    ports:
+      - 26381:26379
+    volumes:
+      - ./sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./redis-sentinel-02/log:/var/log/redis
+    networks: 
+      - redis-net
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    restart: always
+    tty: true
+  
+  redis-sentinel-03:
+    image: redis
+    container_name: redis-sentinel-03
+    ports:
+      - 26382:26379
+    volumes:
+      - ./sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./redis-sentinel-03/log:/var/log/redis
+    networks: 
+      - redis-net
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    restart: always
+
+networks:
+  redis-net:
