@@ -13,7 +13,8 @@ services:
       - ./data/redis-master:/usr/local/redis/data
       - ./log/redis-master:/var/log/redis
     networks: 
-      - redis-net
+      redis-net:
+        ipv4_address: 10.10.20.101
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
 
@@ -29,7 +30,8 @@ services:
       - ./data/redis-slave-01:/usr/local/redis/data
       - ./log/redis-slave-01:/var/log/redis
     networks: 
-      - redis-net
+      redis-net:
+        ipv4_address: 10.10.20.102
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
 
@@ -45,7 +47,8 @@ services:
       - ./data/redis-slave-02:/usr/local/redis/data
       - ./log/redis-slave-02:/var/log/redis
     networks: 
-      - redis-net
+      redis-net:
+        ipv4_address: 10.10.20.103
     command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
 
@@ -60,7 +63,8 @@ services:
       - ./conf/redis-sentinel-01:/usr/local/etc/redis/
       - ./log/redis-sentinel-01:/var/log/redis
     networks: 
-      - redis-net
+      redis-net:
+        ipv4_address: 10.10.20.104
 
     command: redis-sentinel /usr/local/etc/redis/sentinel.conf
     restart: always
@@ -73,10 +77,11 @@ services:
     environment:
       TZ: Asia/Shanghai
     volumes:
-      - ./conf/redis-sentinel-01:/usr/local/etc/redis/
+      - ./conf/redis-sentinel-02:/usr/local/etc/redis/
       - ./log/redis-sentinel-02:/var/log/redis
     networks: 
-      - redis-net
+      redis-net:
+        ipv4_address: 10.10.20.105
     command: redis-sentinel /usr/local/etc/redis/sentinel.conf
     restart: always
     tty: true
@@ -92,9 +97,13 @@ services:
       - ./conf/redis-sentinel-03:/usr/local/etc/redis/
       - ./log/redis-sentinel-03:/var/log/redis
     networks: 
-      - redis-net
+      redis-net:
+        ipv4_address: 10.10.20.106
     command: redis-sentinel /usr/local/etc/redis/sentinel.conf
     restart: always
 
 networks:
   redis-net:
+    ipam:
+      config:
+      - subnet: 10.10.20.0/24
