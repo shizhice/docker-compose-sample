@@ -6,13 +6,15 @@ services:
     ports: 
       - 6380:6379
     container_name: redis-master
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-      - ./redis-master/redis.conf/:/usr/local/etc/redis.conf
-      - ./redis-master/data:/usr/local/redis/data
-      - ./redis-master/log:/var/log/redis
+      - ./conf/redis-master:/usr/local/etc/redis/
+      - ./data/redis-master:/usr/local/redis/data
+      - ./log/redis-master:/var/log/redis
     networks: 
       - redis-net
-    command: redis-server /usr/local/etc/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
 
   redis-slave-01:
@@ -20,13 +22,15 @@ services:
     ports: 
       - 6381:6379
     container_name: redis-slave-01
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-      - ./redis-slave-01/redis.conf/:/usr/local/etc/redis.conf
-      - ./redis-slave-01/data:/usr/local/redis/data
-      - ./redis-slave-01/log:/var/log/redis
+      - ./conf/redis-slave-01:/usr/local/etc/redis/
+      - ./data/redis-slave-01:/usr/local/redis/data
+      - ./log/redis-slave-01:/var/log/redis
     networks: 
       - redis-net
-    command: redis-server /usr/local/etc/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
 
   redis-slave-02:
@@ -34,37 +38,43 @@ services:
     ports: 
       - 6382:6379
     container_name: redis-slave-02
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-      - ./redis-slave-02/redis.conf/:/usr/local/etc/redis.conf
-      - ./redis-slave-02/data:/usr/local/redis/data
-      - ./redis-slave-02/log:/var/log/redis
+      - ./conf/redis-slave-02:/usr/local/etc/redis/
+      - ./data/redis-slave-02:/usr/local/redis/data
+      - ./log/redis-slave-02:/var/log/redis
     networks: 
       - redis-net
-    command: redis-server /usr/local/etc/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
 
   redis-sentinel-01:
     image: redis
-    container_name: redis-sentinel-01
     ports:
       - 26380:26379
+    container_name: redis-sentinel-01
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-      - ./sentinel.conf:/usr/local/etc/redis/sentinel.conf
-      - ./redis-sentinel-01/data:/usr/local/redis/data
-      - ./redis-sentinel-01/log:/var/log/redis
+      - ./conf/redis-sentinel-01:/usr/local/etc/redis/
+      - ./log/redis-sentinel-01:/var/log/redis
     networks: 
       - redis-net
+
     command: redis-sentinel /usr/local/etc/redis/sentinel.conf
     restart: always
   
   redis-sentinel-02:
     image: redis
-    container_name: redis-sentinel-02
     ports:
       - 26381:26379
+    container_name: redis-sentinel-02
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-      - ./sentinel.conf:/usr/local/etc/redis/sentinel.conf
-      - ./redis-sentinel-02/log:/var/log/redis
+      - ./conf/redis-sentinel-01:/usr/local/etc/redis/
+      - ./log/redis-sentinel-02:/var/log/redis
     networks: 
       - redis-net
     command: redis-sentinel /usr/local/etc/redis/sentinel.conf
@@ -73,12 +83,14 @@ services:
   
   redis-sentinel-03:
     image: redis
-    container_name: redis-sentinel-03
     ports:
       - 26382:26379
+    container_name: redis-sentinel-03
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-      - ./sentinel.conf:/usr/local/etc/redis/sentinel.conf
-      - ./redis-sentinel-03/log:/var/log/redis
+      - ./conf/redis-sentinel-03:/usr/local/etc/redis/
+      - ./log/redis-sentinel-03:/var/log/redis
     networks: 
       - redis-net
     command: redis-sentinel /usr/local/etc/redis/sentinel.conf
